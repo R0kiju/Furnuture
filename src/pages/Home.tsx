@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import CategoryNav from '../components/CategoryNav';
 import ProductCard from '../components/ProductCard';
+import ProductSlider from '../components/ProductSlider';
 import Modal from '../components/Modal';
 import { type Product } from '../types';
 import { useCartStore } from '../store/cartStore';
 import { useNavigate } from 'react-router-dom';
 import { useInView } from '../hooks/useInView';
 
-const CATEGORIES = ['Диваны', 'Матрасы', 'Кресла'];
+const CATEGORIES = ['Матрасы', 'Кровати', 'Диваны', 'Кресла', 'Текстиль', 'Подушки', 'Одеяла'];
 
 /* ── Animated category section ──────────────────────────── */
 interface CategorySectionProps {
@@ -70,6 +72,16 @@ const Home: React.FC = () => {
     type: 'catalog' | 'shipping' | 'about' | 'cart' | 'product',
     product?: Product
   ) => {
+    if (type === 'catalog') {
+      const el = document.querySelector('.category-nav');
+      if (el) {
+        window.scrollTo({
+          top: el.getBoundingClientRect().top + window.scrollY - 80,
+          behavior: 'smooth'
+        });
+      }
+      return;
+    }
     setModalType(type);
     if (product) setSelectedProduct(product);
   };
@@ -97,18 +109,39 @@ const Home: React.FC = () => {
         </div>
       </section>
 
+      <CategoryNav 
+        categories={CATEGORIES} 
+        activeCategory={null} 
+        onCategoryClick={(cat) => {
+          const el = document.getElementById(`category-${cat}`);
+          if (el) {
+            const offset = 120; // header + nav height
+            const bodyRect = document.body.getBoundingClientRect().top;
+            const elementRect = el.getBoundingClientRect().top;
+            const elementPosition = elementRect - bodyRect;
+            const offsetPosition = elementPosition - offset;
+
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: 'smooth'
+            });
+          }
+        }} 
+      />
+
       {/* ── PRODUCTS BY CATEGORY (scroll animations) ── */}
       <main>
         {CATEGORIES.map(cat => {
           const items = products.filter(p => p.category === cat);
           if (items.length === 0) return null;
           return (
-            <CategorySection
-              key={cat}
-              category={cat}
-              items={items}
-              onProductClick={(p) => openModal('product', p)}
-            />
+            <div id={`category-${cat}`} key={cat}>
+              <CategorySection
+                category={cat}
+                items={items}
+                onProductClick={(p) => openModal('product', p)}
+              />
+            </div>
           );
         })}
       </main>
@@ -145,7 +178,7 @@ const Home: React.FC = () => {
         <h2 className="modal-title">О компании</h2>
         <div className="info-section">
           <p>
-            <strong>furniture — shop</strong> — дизайн-студия, создающая
+            <strong>𝓕𝓾𝓻𝓷𝓲𝓽𝓾𝓻𝓮 — 𝓼𝓱𝓸𝓹</strong> — дизайн-студия, создающая
             минималистичную мебель высокого качества.
           </p>
           <p>
@@ -159,7 +192,12 @@ const Home: React.FC = () => {
       <Modal isOpen={modalType === 'product' && !!selectedProduct} onClose={closeModal}>
         {selectedProduct && (
           <div>
-            <div className="product-modal__image" />
+            <ProductSlider 
+              images={selectedProduct.images 
+                ? (typeof selectedProduct.images === 'string' ? JSON.parse(selectedProduct.images) : selectedProduct.images) 
+                : [selectedProduct.image]
+              } 
+            />
 
             <p className="product-modal__category">{selectedProduct.category}</p>
             <h2 className="product-modal__name">{selectedProduct.name}</h2>

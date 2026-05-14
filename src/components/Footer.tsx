@@ -6,7 +6,7 @@ const Footer: React.FC = () => {
       <div className="container">
         <div className="footer__grid">
           <div className="footer__info">
-            <h3 className="footer__logo">Furniture-shop</h3>
+            <h3 className="footer__logo">𝓕𝓾𝓻𝓷𝓲𝓽𝓾𝓻𝓮 — 𝓼𝓱𝓸𝓹</h3>
             <p className="footer__desc">
               Furniture-shop — это не просто мебель, а искусство и комфорт в повседневной жизни человека. 
               Сочетание изящества и здорового сна. Наш приоритет — ваше удобство и стиль.

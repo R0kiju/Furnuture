@@ -18,7 +18,7 @@ const Header: React.FC<HeaderProps> = ({ onOpenModal }) => {
   return (
     <header className={`header${scrolled ? ' scrolled' : ''}`}>
       <div className="container header__inner">
-        <div className="header__logo">furniture — shop</div>
+        <div className="header__logo">𝓕𝓾𝓻𝓷𝓲𝓽𝓾𝓻𝓮 — 𝓼𝓱𝓸𝓹</div>
 
         <nav className="header__nav">
           <button className="header__nav-btn" onClick={() => onOpenModal('catalog')}>

@@ -16,8 +16,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
       tabIndex={0}
       onKeyDown={(e) => e.key === 'Enter' && onClick(product)}
     >
-      {/* Solid black landscape placeholder — no border, contrast only */}
-      <div className="product-card__image" />
+      <div className="product-card__image">
+        {product.image ? (
+          <img src={product.image} alt={product.name} />
+        ) : (
+          <div style={{ color: '#ccc', fontSize: '0.8rem' }}>No image</div>
+        )}
+      </div>
 
       <div className="product-card__body">
         <p className="product-card__name">{product.name}</p>

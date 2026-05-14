@@ -6,6 +6,8 @@ export interface Product {
   description: string;
   material: string;
   specs: string;
+  image?: string;
+  images?: string[]; // Multiple images for slider
 }
 
 export interface CartItem extends Product {
